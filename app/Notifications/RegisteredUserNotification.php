@@ -73,8 +73,7 @@ class RegisteredUserNotification extends Notification implements ShouldQueue
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'createdUser' => $this->user,
-            'admin' => $notifiable
+            'notification' => $notifiable->notifications()->latest()->first()
         ]);
     }
 }

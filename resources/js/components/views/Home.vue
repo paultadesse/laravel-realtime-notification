@@ -62,7 +62,7 @@ export default {
     ...mapGetters({
       isAuth: "Auth/isAuth",
       token: "Auth/currentUserToken",
-      id:"Auth/currentUserId",
+      id: "Auth/currentUserId",
       username: "Auth/currentUserName",
     }),
 
@@ -78,13 +78,12 @@ export default {
   },
 
   created() {
-    console.log(this.id)
+    console.log(this.id);
     //Private Channel
-    Echo.private("App.Models.User." + this.id).notification(
-      (notification) => {
-        console.log(notification);
-      }
-    );
+    Echo.private("App.Models.User." + this.id).notification((notification) => {
+      console.log(notification.notification);
+      this.allNotifcations.push(notification.notification);
+    });
 
     // Echo.join(`chat`)
     //   .here((users) => {

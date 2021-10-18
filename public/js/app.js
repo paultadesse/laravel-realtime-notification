@@ -2180,10 +2180,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.thisUser();
   },
   created: function created() {
+    var _this = this;
+
     console.log(this.id); //Private Channel
 
     Echo["private"]("App.Models.User." + this.id).notification(function (notification) {
-      console.log(notification);
+      console.log(notification.notification);
+
+      _this.allNotifcations.push(notification.notification);
     }); // Echo.join(`chat`)
     //   .here((users) => {
     //     console.log(users);
@@ -2202,29 +2206,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     logoutTheUser: "Auth/logoutTheUser"
   })), {}, {
     thisUser: function thisUser() {
-      var _this = this;
-
-      axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
-      axios.get("/api/user").then(function (res) {
-        console.log(_this.token);
-        _this.user = res.data;
-        _this.allNotifcations = _this.user.notifications;
-      })["catch"](function (error) {
-        _this.errors = error.response.data.errors;
-      });
-    },
-    logout: function logout() {
       var _this2 = this;
 
       axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
-      axios.post("/api/logout").then(function (res) {
-        _this2.logoutTheUser();
+      axios.get("/api/user").then(function (res) {
+        console.log(_this2.token);
+        _this2.user = res.data;
+        _this2.allNotifcations = _this2.user.notifications;
+      })["catch"](function (error) {
+        _this2.errors = error.response.data.errors;
+      });
+    },
+    logout: function logout() {
+      var _this3 = this;
 
-        _this2.$router.push({
+      axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
+      axios.post("/api/logout").then(function (res) {
+        _this3.logoutTheUser();
+
+        _this3.$router.push({
           name: "Home"
         });
       })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
       });
     }
   })
